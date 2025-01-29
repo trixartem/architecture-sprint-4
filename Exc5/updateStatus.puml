@@ -1,0 +1,16 @@
+@startuml
+
+title Обновление статуса
+
+actor Operator
+
+Operator -> MESUI : "POST /orders/"
+MESUI -> MESAPI :  "POST /api/orders/"
+MESAPI -> Cache :  "Update status"
+Cache -> DB : "Update status DB"
+DB -> Cache : "Success"
+Cache -> MESAPI : "Success"
+MESAPI -> MESUI : "POST 204 "
+MESUI -> Operator : "204"
+
+@enduml

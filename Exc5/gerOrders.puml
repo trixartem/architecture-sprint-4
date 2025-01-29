@@ -1,0 +1,20 @@
+@startuml
+
+title Чтения списка заказов
+
+actor Operator
+
+Operator -> MESUI : "GET /orders/"
+MESUI -> MESAPI :  "GET /api/orders/"
+MESAPI -> Cache : "Получение списка из кэша"
+Cache -> MESAPI : "Список или пустота"
+alt  "cache is empty"
+  MESAPI --> DB : "Если не было в кэше, то идем в БД"
+  DB --> MESAPI : "Данные из таблицы"
+  MESAPI -> Cache : "Запись в кэш"
+end
+MESAPI -> MESUI : "GET 200 ListOrders"
+MESUI -> Operator : "200 PageOrders"
+
+
+@enduml
